@@ -51,14 +51,10 @@
     [_tabViewController fixProxy];
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application
-{
-    [_tabViewController updateProxy];
-}
-
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     [[NSUserDefaults standardUserDefaults] synchronize];
+    [_tabViewController updateProxy];
 }
 
 @end

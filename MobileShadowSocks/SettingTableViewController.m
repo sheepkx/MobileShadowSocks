@@ -17,8 +17,8 @@
 #import "UIAlertView+TextField.h"
 #import "UIAlertView+Blocks.h"
 
-#define APP_VER @"0.3.1"
-#define APP_BUILD @"2"
+#define APP_VER @"0.4"
+#define APP_BUILD @"1"
 
 #define kURLPrefix @"ss://"
 #define kURLHelpFile @"https://github.com/linusyang/MobileShadowSocks/blob/master/README.md"

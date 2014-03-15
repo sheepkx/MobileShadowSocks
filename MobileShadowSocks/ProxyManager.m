@@ -41,6 +41,12 @@ typedef enum {
     kProxyOperationError
 } ProxyOperationStatus;
 
+@interface ProxyManager ()
+
+@property (assign, nonatomic) UIBackgroundTaskIdentifier backgroundTask;
+
+@end
+
 @implementation ProxyManager
 
 - (void)dealloc
@@ -228,6 +234,19 @@ typedef enum {
     return [[ProfileManager sharedProfileManager] readBool:GLOBAL_PROXY_ENABLE_KEY];
 }
 
+- (void)_beginBackgroundTask
+{
+    self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+        [self _endBackgroundTask];
+    }];
+}
+
+- (void)_endBackgroundTask
+{
+    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
+    self.backgroundTask = UIBackgroundTaskInvalid;
+}
+
 #pragma marks - Public methods
 
 - (void)setProxyEnabled:(BOOL)enabled
@@ -252,8 +271,18 @@ typedef enum {
     // Sync when enabled or trying to proxy
     if (isForce || prefEnabled) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            // begin background task
+            if (!isForce) {
+                [self _beginBackgroundTask];
+            }
+
             // No updating config when fixing proxy
             [self _setProxyEnabled:prefEnabled showAlert:isForce updateConf:!isForce];
+
+            // end background task
+            if (!isForce) {
+                [self _endBackgroundTask];
+            }
         });
     }
 }
