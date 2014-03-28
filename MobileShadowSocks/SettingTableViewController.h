@@ -33,6 +33,7 @@
     NSInteger _pacFileCellTag;
     NSInteger _autoProxyCellTag;
     NSInteger _enableCellTag;
+    NSInteger _vpnModeCellTag;
     NSMutableDictionary *_tagKey;
     NSString *_pacDefaultFile;
     BOOL _isBuggyPhotoPicker;

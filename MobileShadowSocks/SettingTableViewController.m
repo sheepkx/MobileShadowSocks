@@ -105,18 +105,19 @@ typedef enum {
                               NSLocalizedString(@"General", nil),
                               NSLocalizedString(@"Server Information", nil),
                               NSLocalizedString(@"Proxy Settings", nil),
+                              NSLocalizedString(@"Advanced", nil),
                               nil];
         _tableElements = [[NSArray alloc] initWithObjects:
                           [NSArray arrayWithObjects:
                            [NSArray arrayWithObjects:
                             NSLocalizedString(@"Enable Proxy", nil),
-                            GLOBAL_PROXY_ENABLE_KEY,
+                            kProfileProxyEnabled,
                             @"NO",
                             CELL_SWITCH, nil],
                            [NSArray arrayWithObjects:
                             NSLocalizedString(@"Profile", nil),
-                            GLOBAL_PROFILE_NOW_KEY,
-                            PROFILE_DEFAULT_NAME,
+                            kProfileCurrentSelected,
+                            kProfileDefaultName,
                             CELL_VIEW, nil],
                            [NSArray arrayWithObjects:
                             NSLocalizedString(@"Create New Profile", nil),
@@ -173,6 +174,10 @@ typedef enum {
                             @"", 
                             CELL_BUTTON, nil],
                            nil],  
+                          @[
+                            @[NSLocalizedString(@"VPN Mode", nil), kProfileVPNMode, @"NO", CELL_SWITCH],
+                            @[NSLocalizedString(@"Per-App Proxy", nil), kProfileAppProxy, @"", CELL_VIEW]
+                            ],
                           nil];
     }
     return self;
@@ -294,7 +299,7 @@ typedef enum {
             CipherViewController *cipherViewController = [[CipherViewController alloc] initWithStyle:UITableViewStyleGrouped];
             [self.navigationController pushViewController:cipherViewController animated:YES];
             [cipherViewController release];
-        } else if ([cellKey isEqualToString:GLOBAL_PROFILE_NOW_KEY]) {
+        } else if ([cellKey isEqualToString:kProfileCurrentSelected]) {
             ProfileViewController *profileViewController = [[ProfileViewController alloc] initWithStyle:UITableViewStyleGrouped];
             [self.navigationController pushViewController:profileViewController animated:YES];
             [profileViewController release];
@@ -352,12 +357,14 @@ typedef enum {
             UISwitch *switcher = [[UISwitch alloc] initWithFrame:CGRectZero];
             [switcher addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
             [switcher setTag:_tagNumber];
-            if ([cellKey isEqualToString:GLOBAL_PROXY_ENABLE_KEY]) {
+            if ([cellKey isEqualToString:kProfileProxyEnabled]) {
                 _enableCellTag = _tagNumber;
                 if ([switcher respondsToSelector:@selector(setAlternateColors:)])
                     [switcher setAlternateColors:YES];
             } else if ([cellKey isEqualToString:kProfileAutoProxy]) {
                 _autoProxyCellTag = _tagNumber;
+            } else if ([cellKey isEqualToString:kProfileVPNMode]) {
+                _vpnModeCellTag = _tagNumber;
             }
             [_tagKey setObject:cellKey forKey:[NSNumber numberWithInteger:_tagNumber]];
             _tagNumber++;
@@ -394,7 +401,7 @@ typedef enum {
         [switcher setOn:switchValue animated:NO];
     } else if ([cellType hasPrefix:CELL_VIEW]) {
         NSString *currentSetting = nil;
-        if ([cellKey isEqualToString:GLOBAL_PROFILE_NOW_KEY]) {
+        if ([cellKey isEqualToString:kProfileCurrentSelected]) {
             currentSetting = [[ProfileManager sharedProfileManager] nameOfCurrentProfile];
         } else {
             currentSetting = [[ProfileManager sharedProfileManager] readObject:cellKey];
@@ -459,7 +466,7 @@ typedef enum {
                           nil];
     UITextField *textField = [alert textFieldInitAtFirstIndex];
     if (message) {
-        textField.placeholder = PROFILE_DEFAULT_NAME;
+        textField.placeholder = kProfileDefaultName;
     } else {
         [textField setPlaceholder:NSLocalizedString(@"Name", nil)];
     }
@@ -487,7 +494,7 @@ typedef enum {
     if (rawLink) {
         message = [NSString stringWithFormat:@"%@:\n%@", baseHint, rawLink];
     } else {
-        message = [baseHint stringByAppendingString:@"."];
+        message = [baseHint stringByAppendingString:NSLocalizedString(@"STOP_MARK", nil)];
     }
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"QR Code Error", nil)
                                                     message:message
@@ -812,6 +819,19 @@ typedef enum {
     }
 }
 
+- (void)setVPNModeSwitcher:(BOOL)enabled
+{
+    for (UITableViewCell *cell in self.tableView.visibleCells) {
+        if ([cell.accessoryView isKindOfClass:[UISwitch class]]) {
+            UISwitch *switcher = (UISwitch *) cell.accessoryView;
+            if ([switcher tag] == _vpnModeCellTag) {
+                [switcher setOn:enabled];
+                break;
+            }
+        }
+    }
+}
+
 - (void)setBadge:(BOOL)enabled
 {
     if (enabled) {
@@ -830,6 +850,10 @@ typedef enum {
     UISwitch* switcher = sender;
     if ([switcher tag] == _enableCellTag) {
         [self.proxyManager setProxyEnabled:switcher.on];
+        return;
+    }
+    if (switcher.tag == _vpnModeCellTag) {
+        [self.proxyManager setVPNModeEnabled:switcher.on];
         return;
     }
     NSString *key = [_tagKey objectForKey:[NSNumber numberWithInteger:[switcher tag]]];

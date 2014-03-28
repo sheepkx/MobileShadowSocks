@@ -4,6 +4,7 @@
     "AES 192-bit" = "AES 192 \U4f4d";
     "AES 256-bit (Recommended)" = "AES 256 \U4f4d (\U63a8\U8350)";
     About = "\U5173\U4e8e";
+    Advanced = "\U9ad8\U7ea7";
     "Auto Proxy" = "\U81ea\U52a8\U4ee3\U7406";
     "Camellia 128-bit" = "Camellia 128 \U4f4d";
     "Camellia 192-bit" = "Camellia 192 \U4f4d";
@@ -22,6 +23,7 @@
     "Enable Proxy" = "\U542f\U7528\U4ee3\U7406";
     Error = "\U9519\U8bef";
     Exceptions = "\U6392\U9664\U5217\U8868";
+    "Failed to change proxy settings in VPN Mode.\nPlease disable VPN Mode and retry." = "VPN \U6a21\U5f0f\U8bbe\U7f6e\U5931\U8d25\U3002\U8bf7\U5173\U95ed VPN \U6a21\U5f0f\U540e\U91cd\U8bd5\U3002";
     "Failed to change proxy settings.\nMaybe no network access available." = "\U66f4\U6539\U4ee3\U7406\U8bbe\U7f6e\U5931\U8d25\U3002\n\U53ef\U80fd\U65e0\U7f51\U7edc\U8fde\U63a5\U3002";
     "Failed to save QR code image." = "\U65e0\U6cd5\U5b58\U50a8\U4e8c\U7ef4\U7801\U56fe\U50cf\U3002";
     "From Camera" = "\U4ece\U76f8\U673a\U83b7\U53d6";
@@ -44,6 +46,7 @@
     "PAC File" = "PAC \U6587\U4ef6";
     "PAC file not found. Redirect all traffic to proxy." = "PAC \U6587\U4ef6\U672a\U627e\U5230\Uff0c\U9ed8\U8ba4\U6240\U6709\U8fde\U63a5\U4f7f\U7528\U4ee3\U7406\U3002";
     Password = "\U5bc6\U7801";
+    "Per-App Proxy" = "\U5e94\U7528\U5185\U4ee3\U7406";
     "Photo library is not available." = "\U56fe\U5e93\U4e0d\U53ef\U7528\U3002";
     "Please specify file path" = "\U8bf7\U6307\U5b9a\U6587\U4ef6\U8def\U5f84";
     Port = "\U670d\U52a1\U5668\U7aef\U53e3";
@@ -59,6 +62,7 @@
     "Repair Service" = "\U4fee\U590d\U670d\U52a1";
     Retry = "\U91cd\U8bd5";
     Rev = "\U6784\U5efa";
+    "STOP_MARK" = "\U3002";
     "Save to Default" = "\U5b58\U50a8\U5230\U9ed8\U8ba4";
     "Save to Photo Library" = "\U5b58\U50a8\U5230\U56fe\U5e93";
     "Scan QR Code" = "\U626b\U63cf\U4e8c\U7ef4\U7801";
@@ -78,6 +82,7 @@
     Twitter = "\U63a8\U7279";
     "Twitter account is not available." = "\U63a8\U7279\U8d26\U6237\U672a\U542f\U7528\U3002";
     "Use Default PAC File" = "\U4f7f\U7528\U81ea\U5e26 PAC \U6587\U4ef6";
+    "VPN Mode" = "VPN \U6a21\U5f0f";
     Version = "\U7248\U672c";
     Warning = "\U8b66\U544a";
     "Warning: Reparing service will drop all proxy connections. This is only needed when you cannot enable the proxy. Are you sure to continue?" = "\U6ce8\U610f\Uff1a\U4fee\U590d\U670d\U52a1\U4f1a\U4e2d\U65ad\U6240\U6709\U7684\U4ee3\U7406\U8fde\U63a5\Uff0c\U4ec5\U5f53\U60a8\U65e0\U6cd5\U542f\U7528\U4ee3\U7406\U65f6\U624d\U9700\U8981\U4fee\U590d\U3002\U786e\U5b9a\U7ee7\U7eed\U5417\Uff1f";

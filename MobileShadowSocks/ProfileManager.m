@@ -26,7 +26,7 @@ SINGLETON_FOR_CLASS(ProfileManager)
 {
     self = [super init];
     if (self) {
-        _currentProfile = PROFILE_DEFAULT_INDEX;
+        _currentProfile = kProfileDefaultIndex;
         [self reloadProfile];
         
         NSArray *sysPaths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory,NSUserDomainMask, YES);
@@ -45,15 +45,26 @@ SINGLETON_FOR_CLASS(ProfileManager)
 
 #pragma mark - Profile read settings
 
+- (BOOL)isGlobalKey:(NSString *)key
+{
+    static NSArray *defaultKeyArray = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        defaultKeyArray = [[NSArray alloc] initWithArray:@[kProfileProxyEnabled,
+                                                           kProfileCurrentSelected,
+                                                           kProfileList,
+                                                           kProfileVPNMode,
+                                                           kProfileLastBootTime]];
+    });
+    return [defaultKeyArray containsObject:key];
+}
+
 - (void)saveObject:(id)value forKey:(NSString *)key
 {
     if (key == nil) {
         return;
     }
-    if ([self isDefaultProfile] || \
-        [key isEqualToString:GLOBAL_PROXY_ENABLE_KEY] || \
-        [key isEqualToString:GLOBAL_PROFILE_NOW_KEY] || \
-        [key isEqualToString:GLOBAL_PROFILE_LIST_KEY]) {
+    if ([self isDefaultProfile] || [self isGlobalKey:key]) {
         [[NSUserDefaults standardUserDefaults] setObject:value forKey:key];
     } else {
         NSArray *profileList = [self profileList];
@@ -75,10 +86,7 @@ SINGLETON_FOR_CLASS(ProfileManager)
     if (key == nil) {
         return nil;
     }
-    if ([self isDefaultProfile] || \
-        [key isEqualToString:GLOBAL_PROXY_ENABLE_KEY] || \
-        [key isEqualToString:GLOBAL_PROFILE_NOW_KEY] || \
-        [key isEqualToString:GLOBAL_PROFILE_LIST_KEY]) {
+    if ([self isDefaultProfile] || [self isGlobalKey:key]) {
         value = [[NSUserDefaults standardUserDefaults] objectForKey:key];
     } else {
         NSArray *profileList = [self profileList];
@@ -107,7 +115,7 @@ SINGLETON_FOR_CLASS(ProfileManager)
 {
     NSNumber *value = [self readObject:key];
     if (value == nil || ![value isKindOfClass:[NSNumber class]]) {
-        return PROFILE_DEFAULT_INDEX;
+        return kProfileDefaultIndex;
     }
     return [value integerValue];
 }
@@ -124,7 +132,7 @@ SINGLETON_FOR_CLASS(ProfileManager)
 
 - (BOOL)isDefaultProfile
 {
-    return _currentProfile == PROFILE_DEFAULT_INDEX;
+    return _currentProfile == kProfileDefaultIndex;
 }
 
 #pragma mark - Profile operations
@@ -136,7 +144,7 @@ SINGLETON_FOR_CLASS(ProfileManager)
 
 - (NSArray *)profileList
 {
-    NSArray *profileList = [[NSUserDefaults standardUserDefaults] objectForKey:GLOBAL_PROFILE_LIST_KEY];
+    NSArray *profileList = [[NSUserDefaults standardUserDefaults] objectForKey:kProfileList];
     if ([profileList isKindOfClass:[NSArray class]]) {
         return profileList;
     }
@@ -152,12 +160,12 @@ SINGLETON_FOR_CLASS(ProfileManager)
 {
     NSString *name = nil;
     NSArray *profileList = [self profileList];
-    if (index == PROFILE_DEFAULT_INDEX) {
-        name = PROFILE_DEFAULT_NAME;
+    if (index == kProfileDefaultIndex) {
+        name = kProfileDefaultName;
     } else if (profileList != nil && index >= 0 && index < [profileList count]) {
         NSDictionary *profile = [profileList objectAtIndex:index];
         if ([profile isKindOfClass:[NSDictionary class]]) {
-            name = [profile objectForKey:PROFILE_NAME_KEY];
+            name = [profile objectForKey:kProfileName];
         }
     }
     return name;
@@ -182,7 +190,7 @@ SINGLETON_FOR_CLASS(ProfileManager)
         NSDictionary *profile = [profileList objectAtIndex:index];
         if ([profile isKindOfClass:[NSDictionary class]]) {
             NSMutableDictionary *newProfile = [NSMutableDictionary dictionaryWithDictionary:profile];
-            [newProfile setObject:finalName forKey:PROFILE_NAME_KEY];
+            [newProfile setObject:finalName forKey:kProfileName];
             NSMutableArray *newProfileList = [NSMutableArray arrayWithArray:profileList];
             [newProfileList replaceObjectAtIndex:index withObject:newProfile];
             [self updateProfileList:newProfileList];
@@ -192,12 +200,12 @@ SINGLETON_FOR_CLASS(ProfileManager)
 
 - (void)updateProfileList:(id)value
 {
-    [[NSUserDefaults standardUserDefaults] setObject:value forKey:GLOBAL_PROFILE_LIST_KEY];
+    [[NSUserDefaults standardUserDefaults] setObject:value forKey:kProfileList];
 }
 
 - (void)selectProfile:(NSInteger)profileIndex
 {
-    [self saveInt:profileIndex forKey:GLOBAL_PROFILE_NOW_KEY];
+    [self saveInt:profileIndex forKey:kProfileCurrentSelected];
     _currentProfile = profileIndex;
 }
 
@@ -211,7 +219,7 @@ SINGLETON_FOR_CLASS(ProfileManager)
         NSMutableArray *newProfileList = [NSMutableArray arrayWithArray:profileList];
         [newProfileList removeObjectAtIndex:profileIndex];
         [self updateProfileList:newProfileList];
-        [self selectProfile:PROFILE_DEFAULT_INDEX];
+        [self selectProfile:kProfileDefaultIndex];
     }
 }
 
@@ -228,15 +236,15 @@ SINGLETON_FOR_CLASS(ProfileManager)
         [newProfileList removeObjectAtIndex:fromIndex];
         [newProfileList insertObject:movingObject atIndex:toIndex];
         [self updateProfileList:newProfileList];
-        [self selectProfile:PROFILE_DEFAULT_INDEX];
+        [self selectProfile:kProfileDefaultIndex];
     }
 }
 
 - (void)reloadProfile
 {
-    _currentProfile = [self readInt:GLOBAL_PROFILE_NOW_KEY];
+    _currentProfile = [self readInt:kProfileCurrentSelected];
     if (_currentProfile < 0 || _currentProfile >= [self profileListCount]) {
-        _currentProfile = PROFILE_DEFAULT_INDEX;
+        _currentProfile = kProfileDefaultIndex;
     }
 }
 
@@ -248,11 +256,11 @@ SINGLETON_FOR_CLASS(ProfileManager)
             [rawInfo enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                 [[NSUserDefaults standardUserDefaults] setObject:obj forKey:key];
             }];
-            [self selectProfile:PROFILE_DEFAULT_INDEX];
+            [self selectProfile:kProfileDefaultIndex];
         }
         return;
     }
-    NSMutableDictionary *profileInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:profileName, PROFILE_NAME_KEY, nil];
+    NSMutableDictionary *profileInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:profileName, kProfileName, nil];
     if (rawInfo) {
         [profileInfo addEntriesFromDictionary:rawInfo];
     }

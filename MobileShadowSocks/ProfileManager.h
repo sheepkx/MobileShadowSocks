@@ -8,13 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-#define GLOBAL_PROFILE_NOW_KEY @"SELECTED_PROFILE"
-#define GLOBAL_PROFILE_LIST_KEY @"PROFILE_LIST"
-#define GLOBAL_PROXY_ENABLE_KEY @"PROXY_ENABLED"
+#define kProfileCurrentSelected @"SELECTED_PROFILE"
+#define kProfileList @"PROFILE_LIST"
+#define kProfileProxyEnabled @"PROXY_ENABLED"
+#define kProfileVPNMode @"VPN_MODE"
+#define kProfileAppProxy @"APP_PROXY"
+#define kProfileLastBootTime @"LAST_BOOT_TIME"
 
-#define PROFILE_DEFAULT_NAME NSLocalizedString(@"Default", nil)
-#define PROFILE_DEFAULT_INDEX -1
-#define PROFILE_NAME_KEY @"PROFILE_NAME"
+#define kProfileDefaultName NSLocalizedString(@"Default", nil)
+#define kProfileDefaultIndex -1
+#define kProfileName @"PROFILE_NAME"
 
 #define kProfileServer @"REMOTE_SERVER"
 #define kProfilePort @"REMOTE_PORT"

@@ -4,6 +4,7 @@
     "AES 192-bit" = "AES 192-bit";
     "AES 256-bit (Recommended)" = "AES 256-bit (Recommended)";
     About = About;
+    Advanced = Advanced;
     "Auto Proxy" = "Auto Proxy";
     Blowfish = Blowfish;
     CAST5 = CAST5;
@@ -25,6 +26,7 @@
     "Enable Proxy" = "Enable Proxy";
     Error = Error;
     Exceptions = Exceptions;
+    "Failed to change proxy settings in VPN Mode.\nPlease disable VPN Mode and retry." = "Failed to change proxy settings in VPN Mode.\nPlease disable VPN Mode and retry.";
     "Failed to change proxy settings.\nMaybe no network access available." = "Failed to change proxy settings.\nMaybe no network access available.";
     "Failed to save QR code image." = "Failed to save QR code image.";
     "From Camera" = "From Camera";
@@ -33,7 +35,6 @@
     "Help Page" = "Help Page";
     "I've shared a #ShadowSocks profile with QR Code." = "I've shared a #ShadowSocks profile with QR Code.";
     "I've shared a #ShadowSocks# profile with QR Code." = "I've shared a #ShadowSocks# profile with QR Code.";
-    IDEA = IDEA;
     "Icon and ShadowSocks (libev) by @madeye" = "Icon and ShadowSocks (libev) by @madeye";
     "Image is saved to photo library." = "Image is saved to photo library.";
     "Import or Share Profiles by QR Code" = "Import or Share Profiles by QR Code";
@@ -48,6 +49,7 @@
     "PAC File" = "PAC File";
     "PAC file not found. Redirect all traffic to proxy." = "PAC file not found. Redirect all traffic to proxy.";
     Password = Password;
+    "Per-App Proxy" = "Per-App Proxy";
     "Photo library is not available." = "Photo library is not available.";
     "Please specify file path" = "Please specify file path";
     Port = Port;
@@ -56,6 +58,7 @@
     "Profile name is empty. Do you want to overwrite the default profile, or retry with a new name?" = "Profile name is empty. Do you want to overwrite the default profile, or retry with a new name?";
     Profiles = Profiles;
     "Proxy Settings" = "Proxy Settings";
+    "Public Accounts" = "Public Accounts";
     "QR Code" = "QR Code";
     "QR Code Error" = "QR Code Error";
     RC2 = RC2;
@@ -64,7 +67,7 @@
     "Repair Service" = "Repair Service";
     Retry = Retry;
     Rev = Rev;
-    SEED = SEED;
+    "STOP_MARK" = ".";
     "Save to Default" = "Save to Default";
     "Save to Photo Library" = "Save to Photo Library";
     "Scan QR Code" = "Scan QR Code";
@@ -84,6 +87,7 @@
     Twitter = Twitter;
     "Twitter account is not available." = "Twitter account is not available.";
     "Use Default PAC File" = "Use Default PAC File";
+    "VPN Mode" = "VPN Mode";
     Version = Version;
     Warning = Warning;
     "Warning: Reparing service will drop all proxy connections. This is only needed when you cannot enable the proxy. Are you sure to continue?" = "Warning: Reparing service will drop all proxy connections. This is only needed when you cannot enable the proxy. Are you sure to continue?";

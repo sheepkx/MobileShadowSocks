@@ -14,6 +14,7 @@
 @property (nonatomic, assign) id<SettingTableViewControllerDelegate> delegate;
 
 - (void)setProxyEnabled:(BOOL)enabled;
+- (void)setVPNModeEnabled:(BOOL)enabled;
 - (void)syncAutoProxy;
 - (void)syncProxyStatus:(BOOL)isForce;
 - (void)forceStopProxyDaemon;
