@@ -25,6 +25,7 @@ build_launcher() {
         -framework CoreFoundation \
         -framework SystemConfiguration \
         -lpolarssl \
+        -ltsocks \
         -o "$2" \
         "${SRCDIR}/src/encrypt.c" \
         "${SRCDIR}/src/local.c" \
