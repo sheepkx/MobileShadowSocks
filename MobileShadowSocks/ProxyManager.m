@@ -10,10 +10,16 @@
 #import "ProfileManager.h"
 #import <sys/types.h>
 #import <sys/sysctl.h>
+#include <netdb.h>
 
-#define MAX_TRYTIMES 3
+#define MAX_TRYTIMES 5
 #define MAX_TIMEOUT 2.0
 #define BOOT_TIME_DIFF 2
+
+#define DNS_CHECK_QUEUE_NAME "com.linusyang.MobileShadowSocks.dnscheck"
+#define DNS_CHECK_URL "www.apple.com"
+#define DNS_CHECK_DELAY 1
+#define DNS_CHECK_TIMEOUT 2
 
 #define STR2(x) #x
 #define STR(x) STR2(x)
@@ -175,7 +181,39 @@ typedef enum {
     // Execute proxy operation only if not same
     ProxyOperationStatus status = kProxyOperationSuccess;
     if (currentOp != op && !noSendOp) {
+        BOOL isEnablingVPNMode = isVPNMode && enabled;
+        
+        // Show progress view when enabling VPN mode
+        if (isEnablingVPNMode) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.delegate showHUD:YES];
+            });
+        }
+        
         status = [self _sendProxyOperation:op];
+        
+        if (isEnablingVPNMode) {
+            if (status == kProxyOperationSuccess) {
+                // Check if support VPN mode
+                [self _checkVPNModeIsSupported:^{
+                    // Hide progress view
+                    [self.delegate showHUD:NO];
+                    
+                    // Alert VPN mode not supported
+                    [self.delegate showError:NSLocalizedString(@"VPN Mode isn't supported.\nVPN Mode requires ShadowSocks server 1.4 or above with UDP relay enabled.", nil)];
+                    
+                    // Disable VPN mode
+                    [self setVPNModeEnabled:NO];
+                    
+                    // Update UI
+                    [self.delegate setVPNModeSwitcher:NO];
+                }];
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.delegate showHUD:NO];
+                });
+            }
+        }
     }
     
     // Show alert when error
@@ -378,6 +416,39 @@ typedef enum {
     self.backgroundTask = UIBackgroundTaskInvalid;
 }
 
+- (void)_checkVPNModeIsSupported:(void (^)(void))timeoutBlock
+{
+    __block BOOL result = NO;
+    
+    if (timeoutBlock != nil) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) ((DNS_CHECK_DELAY + DNS_CHECK_TIMEOUT) * NSEC_PER_SEC)),
+                       dispatch_get_main_queue(), ^(void){
+            if (!result) {
+                timeoutBlock();
+            }
+        });
+    }
+    
+    dispatch_queue_t queue = dispatch_queue_create(DNS_CHECK_QUEUE_NAME, NULL);
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (DNS_CHECK_DELAY * NSEC_PER_SEC)),
+                   queue, ^(void){
+        struct addrinfo hints;
+        struct addrinfo *res;
+        
+        memset(&hints, 0, sizeof(hints));
+        hints.ai_family = AF_INET;
+        hints.ai_socktype = SOCK_DGRAM;
+        if (getaddrinfo(DNS_CHECK_URL, NULL, &hints, &res) == 0) {
+            result = YES;
+        }
+        freeaddrinfo(res);
+        dispatch_async(dispatch_get_main_queue(), ^{
+           [self.delegate showHUD:NO];
+        });
+    });
+    dispatch_release(queue);
+}
+
 #pragma marks - Public methods
 
 - (void)setProxyEnabled:(BOOL)enabled
@@ -401,6 +472,9 @@ typedef enum {
             
             // Exit VPN mode
             [self _setPrefVPNModeEnabled:NO];
+            
+            // Stop daemon
+            [self _sendProxyOperation:kProxyOperationForceStop];
         }
         
         // Apply proxy settings

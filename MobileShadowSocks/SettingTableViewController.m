@@ -16,6 +16,7 @@
 #import "ProfileManager.h"
 #import "UIAlertView+TextField.h"
 #import "UIAlertView+Blocks.h"
+#import "MBProgressHUD.h"
 
 #define APP_VER @"0.4"
 #define APP_BUILD @"1"
@@ -829,6 +830,16 @@ typedef enum {
                 break;
             }
         }
+    }
+}
+
+- (void)showHUD:(BOOL)enabled
+{
+    UIWindow *window = [[[UIApplication sharedApplication] windows] lastObject];
+    if (enabled) {
+        [MBProgressHUD showHUDAddedTo:window animated:YES];
+    } else {
+        [MBProgressHUD hideAllHUDsForView:window animated:YES];
     }
 }
 

@@ -19,6 +19,8 @@
 - (void)setBadge:(BOOL)enabled;
 - (void)setProxySwitcher:(BOOL)enabled;
 - (void)setAutoProxySwitcher:(BOOL)enabled;
+- (void)setVPNModeSwitcher:(BOOL)enabled;
+- (void)showHUD:(BOOL)enabled;
 - (void)checkFileNotFound;
 
 @end

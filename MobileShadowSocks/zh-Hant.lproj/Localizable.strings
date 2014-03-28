@@ -83,6 +83,7 @@
     "Twitter account is not available." = "Twitter \U8cec\U6236\U672a\U555f\U7528\U3002";
     "Use Default PAC File" = "\U4f7f\U7528\U81ea\U5e36 PAC \U6a94\U6848";
     "VPN Mode" = "VPN \U6a21\U5f0f";
+    "VPN Mode isn't supported.\nVPN Mode requires ShadowSocks server 1.4 or above with UDP relay enabled." = "\U7121\U6cd5\U555f\U7528 VPN \U6a21\U5f0f\U3002\nVPN \U6a21\U5f0f\U9700\U8981\U5f71\U68ad\U4f3a\U670d\U5668\U4f7f\U7528 1.4 \U6216\U66f4\U65b0\U7684\U7248\U672c\Uff0c\U4e14\U958b\U555f UDP \U8f49\U767c\U529f\U80fd\U3002";
     Version = "\U7248\U672c";
     Warning = "\U8b66\U544a";
     "Warning: Reparing service will drop all proxy connections. This is only needed when you cannot enable the proxy. Are you sure to continue?" = "\U6ce8\U610f\Uff1a\U4fee\U5fa9\U670d\U52d9\U6703\U4e2d\U65b7\U6240\U6709\U7684\U4ee3\U7406\U9023\U7dda\Uff0c\U50c5\U7576\U60a8\U7121\U6cd5\U555f\U7528\U4ee3\U7406\U6642\U624d\U9700\U8981\U4fee\U5fa9\U3002\U78ba\U5b9a\U7e7c\U7e8c\U55ce\Uff1f";

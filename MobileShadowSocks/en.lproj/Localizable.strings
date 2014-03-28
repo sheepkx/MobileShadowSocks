@@ -88,6 +88,7 @@
     "Twitter account is not available." = "Twitter account is not available.";
     "Use Default PAC File" = "Use Default PAC File";
     "VPN Mode" = "VPN Mode";
+    "VPN Mode isn't supported.\nVPN Mode requires ShadowSocks server 1.4 or above with UDP relay enabled." = "VPN Mode isn't supported.\nVPN Mode requires ShadowSocks server 1.4 or above with UDP relay enabled.";
     Version = Version;
     Warning = Warning;
     "Warning: Reparing service will drop all proxy connections. This is only needed when you cannot enable the proxy. Are you sure to continue?" = "Warning: Reparing service will drop all proxy connections. This is only needed when you cannot enable the proxy. Are you sure to continue?";
