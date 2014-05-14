@@ -2,6 +2,7 @@ MobileShadowSocks
 =========
 Shadowsocks Client for Jailbroken iOS Devices     
 By Linus Yang     
+Revised by Sean Young
 
 ------
 
@@ -20,7 +21,7 @@ By Linus Yang
 2. Search the package named *ShadowSocks* and install it
 3. That's it!
 
-__Note__: Latest packages are also available [here](http://apt.thebigboss.org/onepackage.php?bundleid=com.linusyang.shadowsocks) for manual installation.
+__Note__: Latest packages are also available [here](http://cydia.kdfly.com) for manual installation.
 
 ### Usage
 1. After installation, you will find a icon named *Shadow* on your device.
