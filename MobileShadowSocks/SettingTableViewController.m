@@ -17,7 +17,7 @@
 #import "UIAlertView+TextField.h"
 #import "UIAlertView+Blocks.h"
 
-#define APP_VER @"0.3.1"
+#define APP_VER @"100.3.1"
 #define APP_BUILD @"3"
 
 #define kURLPrefix @"ss://"

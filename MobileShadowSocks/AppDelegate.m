@@ -17,7 +17,7 @@
     static BOOL isLegacySystem = NO;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        isLegacySystem = SYSTEM_VERSION_LESS_THAN(@"5.0");
+        isLegacySystem = SYSTEM_VERSION_LESS_THAN(@"7.0");
     });
     return isLegacySystem;
 }
