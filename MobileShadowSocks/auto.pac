@@ -490,6 +490,7 @@ var autoproxy_host = {
     "atlaspost.com": 1,
     "atnext.com": 1,
     "autoproxy-gfwlist.googlecode.com": 1,
+    "repo.hackyouriphone.org": 1,
     "avaaz.org": 1,
     "avidemux.org": 1,
     "avoision.com": 1,
